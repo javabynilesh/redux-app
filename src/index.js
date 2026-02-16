@@ -3,16 +3,25 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { legacy_createStore as createStore} from 'redux';
 import {composeWithDevTools} from "redux-devtools-extension";
-
+import * as ActionTypeConstant from './ActionTypeConstant';
 var defaultBalance = 0;
+
+//action creator
+let deposite = (amount) =>{
+    return {type: ActionTypeConstant.DEPOSIT, payload: {amount:amount}};
+};
+
+let withdraw = (amount) =>{
+    return {type: ActionTypeConstant.WITHDRAW, payload: {amount:amount}};
+};
 
 //reducer
 let balanceReducer = (state = defaultBalance, action) => {
     console.log("Reducer is called with state & action: ", state, action);
     switch (action.type) {
-        case "DEPOSIT":
+        case ActionTypeConstant.DEPOSIT:
             return state + action.payload.amount;
-        case "WITHDRAW":
+        case ActionTypeConstant.WITHDRAW:
             return state - action.payload.amount;
         default:
             return state;
@@ -28,10 +37,10 @@ store.subscribe(()=>{
 //dispatch  //if want to update sate , we have to pass action to store by using a predefine function called dispatch
 //invoke the reducer automatically
 
-store.dispatch({type: "DEPOSIT", payload: {amount :1000}});
+store.dispatch(deposite(1000));
 
-store.dispatch({type: "DEPOSIT", payload: {amount :450}});
+store.dispatch(deposite(450));
 
-store.dispatch({type: "WITHDRAW", payload: {amount :250}});
+store.dispatch(withdraw(250));
 
 ReactDOM.render(<App/>, document.getElementById("root"));
